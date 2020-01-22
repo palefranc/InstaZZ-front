@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Publication from "./composants/Publication";
+import Users from "./composants/Users";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Form from 'react-bootstrap/Form';
@@ -19,7 +20,7 @@ import {
 
 const Index = () =>  <Publication/>;
 const About = () =>  <h2>About</h2>;
-const Users = () =>  <h2>Users</h2>;
+const users_list = () =>  <Users/>;
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
        <Switch>
          <Route path="/" exact component={Index}/>
          <Route path="/about/" component={About}/>
-         <Route path="/users/" component={Users}/>
+         <Route path="/users/" component={users_list}/>
        </Switch>
 
      </div>
