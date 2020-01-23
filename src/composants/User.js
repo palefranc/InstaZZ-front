@@ -1,21 +1,20 @@
-import axios from 'axios';
+import axios from '../url/url_bdd';
 import React, { Component } from "react";
-
-let baseUrl = "localhost:3000";
 
 export default class User extends Component {
     constructor(props) {
         super(props);
-        this.state = props.in_user;
+        this.state = { user: props.in_user };
     }
 
     componentDidMount() {
-        let url_request = baseUrl + "/user/" + this.state._id;
-        //this.setState({ email: url_request });
-        axios.get(url_request)
+        axios.get("/users/" + this.state.user._id)
             .then(res => {
-                let user = res.date;
-                this.setState({ user })
+                let user = res.data;
+                if (user) {
+                    this.setState({ user: user });
+                    console.log(this.state.user);
+                }
             })
             .catch(err => console.error(err));
     }
@@ -23,9 +22,9 @@ export default class User extends Component {
     render() {
         return (
             <div>
-                nom : {this.state.username},<br />
-                description : {this.state.bio}<br />
-                email : {this.state.email}
+                nom : {this.state.user.username},<br />
+                description : {this.state.user.bio}<br />
+                email : {this.state.user.email}
             </div>
         );
     }

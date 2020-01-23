@@ -24,34 +24,32 @@ export default class Users extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            message: axios.defaults.baseURL + "/user",
-            users: []
-        })
-
-        if (this.state.show == "details") {
+        if (this.state.show.toLocaleString()=="details") {
             var id = this.state.users[0]._id;
-            axios.get("/user/"+id)
+            axios.get("/users/"+id)
                 .then(res => {
-                    const user = res.date;
-                    this.update(users);
-                    this.setState({
-                        message: res.status,
-                        users: users
-                    })
+                    const user = res.data;
+                    if (user) {
+                        this.setState({
+                            message: res.status,
+                            users: [user]
+                        })
+                    }
                 }).catch(err => {
                     console.error(err);
                 })
         }
         else {
-            axios.get("/user")
+            axios.get("/users")
                 .then(res => {
-                    const users = res.date;
-                    this.update(users);
-                    this.setState({
-                        message: res.status,
-                        users: users
-                    })
+                    const users = res.data.users;
+					if(users) {
+						this.setState({
+							message: res.status,
+							users: users
+						})
+						
+					}
                 }).catch(err => {
                     console.error(err);
                 })
@@ -61,21 +59,19 @@ export default class Users extends Component {
     showList() {
         return (
             <div>
-                {this.state.message}
                 <ul>
-                    {
-                        this.state.users.map(
-                            user => <li>
-                                {user.username} <br /> {user.email}
-                            </li>
-                        )
-                    }
+                {this.state.users.map(function (user) {
+                        return (<li>
+                            {user.username} <br /> {user.email}
+                        </li>);
+                })}
                 </ul>
             </div>
         );
     }
 
     showDetails() {
+        //console.log(this.state.users[0]);
         return (
             <div>
                 <User in_user={this.state.users[0]} />
@@ -86,7 +82,7 @@ export default class Users extends Component {
     render() {
         var affichage;
 
-        if (this.state.show == "details") {
+        if (this.state.show.toLocaleString()=="details") {
             affichage = this.showDetails();
         }
         else {
