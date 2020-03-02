@@ -1,0 +1,22 @@
+.user_publication {
+	text-align: center;
+}
+
+.list_publications {
+	margin-top: 15px;
+	text-align: center;
+}
+
+.pagination {
+	width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pagination li {
+	text-align: center;
+	border: 1px grey solid;
+	width: 30px;
+	height: 30px;
+	background-color: honeydew;
+}

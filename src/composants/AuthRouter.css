@@ -1,0 +1,33 @@
+.login {
+	text-align: center;
+	height:300px;
+}
+
+input#u_mail {
+	margin: 4px;
+}
+
+input#u_pwd {
+	margin: 4px;
+}
+
+.blank {
+	height: 150px;
+}
+
+.logo {
+	height: 75%;
+	margin-top: 2%;
+}
+
+.button_connexion {
+	margin: 5px;
+}
+
+.button_inscription {
+	background-color: CYAN;
+}
+
+.errorMessage {
+	color: RED;
+}

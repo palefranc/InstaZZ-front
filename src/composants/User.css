@@ -1,0 +1,63 @@
+.user {
+	text-align: center;
+}
+
+.infos_user {
+	margin: 15px;
+}
+
+.user_name {
+	margin: 15px;
+	font-weight: 700;
+	text-decoration: underline;
+}
+
+	.button_ajout {
+		margin-bottom: 15px;
+	}
+
+.publications_user {
+	margin: 15px;
+}
+
+.input_infos_user {
+	text-align: center;
+}
+
+.titre {
+	text-decoration: underline;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-weight: 700;
+}
+
+#input_name {
+	margin-left: 63px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#input_desc {
+	margin-left: 17px;
+	margin-bottom: 10px;
+}
+
+#input_email {
+	margin-left: 57px;
+	margin-bottom: 10px;
+}
+
+.button_save_modif {
+	background-color: cornflowerblue;
+    color: aliceblue;
+	margin: 10px;
+	
+}
+
+.button_cancel_modif {
+	margin: 10px;
+}
+
+.button_delete_user {
+	
+}

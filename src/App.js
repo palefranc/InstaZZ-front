@@ -1,6 +1,7 @@
 import React from 'react';
 //import logo from './logo.svg';
 import './App.css';
+import dotenv from "dotenv";
 import Publication from "./composants/Publication";
 import ListPublications from "./composants/ListPublications";
 import User from "./composants/User";
@@ -41,21 +42,22 @@ function search(ev) {
 }
 
 function deconnexion(ev){
-	localStorage.removeItem("token_id");
-	localStorage.removeItem("token_mail");
-	localStorage.removeItem("token_pwd");
+	localStorage.removeItem("token");
 	window.location = "http://localhost:3000/";
 }
 
 function App() {
+	dotenv.config();
   return (
     <Router>
      <div>
      <Navbar bg="dark" variant="dark">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png"
-            alt="InstaZZ" id="logo"/>
+		<a href="http://localhost:3000/">
+			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png"
+				alt="InstaZZ" id="logo"/>
+		</a>
         <Nav className="mr-auto">
-          <Nav.Link href="http://localhost:3000/auth/">Profil</Nav.Link>
+          <Nav.Link href="http://localhost:3000/profil/">Profil</Nav.Link>
           <Nav.Link href="http://localhost:3000/posts/">Mur</Nav.Link>
         </Nav>
         <Form inline>
@@ -69,6 +71,7 @@ function App() {
 		 <Route path="/" exact component={auth}/>
          <Route path="/auth" exact component={auth}/>
          <Route path="/about/" component={About}/>
+         <Route path="/profil/:idUser" component={User}/>
          <Route path="/profil/" component={user_profil}/>
          <Route path="/users/" component={users_list}/>
          <Route path="/posts/" component={posts_list}/>
