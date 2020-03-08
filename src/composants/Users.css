@@ -1,5 +1,12 @@
 .list_users {
-	text-align: center;
+}
+
+.list_users_element
+{
+	display: flex;
+	padding: 5px;
+    border-bottom: #a0a0a0 solid 1px;
+    margin-bottom: 5px;
 }
 
 .pagination {

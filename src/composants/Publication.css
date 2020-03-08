@@ -26,16 +26,16 @@
 			border-radius: 5px;
 		}
 		
-	.like_on {
-		margin: 4px;
-		width:20px;
-		height:20px;
-		background-color: cyan;
-		border-radius: 5px;
+	.like.on {
+		background-color: lightcyan;
 	}
 	
 	
-	.like_off {
+	.like.off {
+	}
+	
+	.like_img
+	{
 		margin: 4px;
 		width:20px;
 		height:20px;
@@ -46,10 +46,11 @@
 		width: 400px;
 		margin: auto;
 		margin-bottom: 10px;
+		text-align: initial;
 	}
 	
-	.input_text_commentaire {
-		width: 334px;
+	#input_text_commentaire {
+		margin-bottom: 10px!important;
 	}
 	
 	.commentaire {

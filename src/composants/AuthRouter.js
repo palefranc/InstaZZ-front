@@ -21,7 +21,7 @@ export default class AuthRouter extends Router {
             input_email: "",
             input_pwd: "",
 			message: "",
-			creationUser: false
+			creationUser: props.signup
         };
     }
 	
@@ -169,39 +169,55 @@ export default class AuthRouter extends Router {
 	
 	getAutComp()
 	{
-		return(
-			<div className="login">
-				<div className="blank">
-					<img src={logo} alt="logo" className="logo"/>
-				</div>
-				<form onSubmit={(ev, context) => this.authUser(ev, this)}>
-					<div>
-						<input type="text"
-							id="u_mail"
-							placeholder="Adresse e-mail"
-							value={this.state.input_email}
-							onChange={(ev) => { this.changeMail(ev) } }
-						/><br />
-						<input type="password"
-							id="u_pwd"
-							placeholder="Mot de passe"
-							value={this.state.input_password}
-							onChange={(ev) => { this.changePwd(ev) }}
-						/>
+		return(<div className="login">
+			<div className="blank">
+				<img src={logo} alt="logo" className="logo"/>
+			</div>
+				<form className="text-center border border-light p-5" onSubmit={(ev, context) => this.authUser(ev, this)}>
+
+					<p className="h4 mb-4">Sign in</p>
+
+					<input type="email" 
+						id="defaultLoginFormEmail" 
+						className="form-control mb-4" 
+						placeholder="E-mail"
+						onChange={(ev) => { this.changeMail(ev); } }
+					/>
+
+					<input type="password"
+						id="defaultLoginFormPassword"
+						className="form-control mb-4"
+						placeholder="Password" 
+						onChange={(ev) => { this.changePwd(ev); } }
+					/>
+
+					<div className="d-flex justify-content-around">
+						<div>
+							<div className="custom-control custom-checkbox">
+								<input type="checkbox" className="custom-control-input" id="defaultLoginFormRemember" />
+								<label className="custom-control-label">Remember me</label>
+							</div>
+						</div>
+						<div>
+							<a href="">Forgot password?</a>
+						</div>
 					</div>
-					<button type="submit" className="button_connexion">Connexion</button>
+
+					<button className="btn btn-info btn-block my-4" type="submit">Sign in</button>
+
+					<p>Not a member?
+						<a href="/auth/signup">Register</a>
+					</p>
+
 				</form>
-				<br />
-				<button className="button_inscription" onClick={(ev, context) => this.activeCreation(ev, this)}>S'inscrire</button>
-				<div className="errorMessage">{this.state.message}</div>
 			</div>
 		);
+		
 	}
 	
 	getCreateUser()
 	{
-		return(
-			<div>
+		const comp = (<div>
 				<form onSubmit={(ev, context) => this.createUser(ev, this)}>
 					<div>
 						Nom d'utilisateur : 
@@ -237,6 +253,52 @@ export default class AuthRouter extends Router {
 				</form>
 				<button onClick={(ev, context) => this.desactiveCreation(ev, this)}>Annuler</button><br />
 				<div className="errorMessage">{this.state.message}</div>
+			</div>);
+		
+		return(
+			<div className="signup">
+				<form className="text-center border border-light p-5" onSubmit={(ev, context) => this.createUser(ev, this)}>
+
+					<p className="h4 mb-4">Sign up</p>
+
+					<div className="form-row mb-4">
+						<div className="col">
+							<input type="text"
+								id="defaultRegisterFormLastName"
+								className="form-control"
+								placeholder="User name"
+								onChange={(ev) => { this.changeName(ev) }} />
+						</div>
+					</div>
+
+					<input type="email"
+						id="defaultRegisterFormEmail"
+						className="form-control mb-4"
+						placeholder="E-mail"
+						onChange={(ev) => { this.changeMail(ev) }}
+					/>
+
+					<input
+						type="password"
+						id="defaultRegisterFormPassword"
+						className="form-control"
+						placeholder="Password"
+						aria-describedby="defaultRegisterFormPasswordHelpBlock"
+						onChange={(ev) => { this.changePwd(ev) }}
+					/>
+					<small id="defaultRegisterFormPasswordHelpBlock" className="form-text text-muted mb-4">
+						At least 8 characters and 1 digit
+					</small>
+					
+					<button className="btn btn-info my-4 btn-block" type="submit">Sign in</button>
+					<hr />
+
+					<p>By clicking
+						<em>Sign up</em> you agree to our
+						<a href="" target="_blank"> terms of service</a>
+					</p>
+
+				</form>
 			</div>
 		);
 	}

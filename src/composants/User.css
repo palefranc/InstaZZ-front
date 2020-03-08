@@ -1,14 +1,54 @@
 .user {
+	
+}
+
+.infos_quantite {
+    display: inline-flex;
+}
+
+.infos_quantite div{
 	text-align: center;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.infos_quantite a{
+	text-align: center;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 
 .infos_user {
+	display: flex;
 	margin: 15px;
+	padding: 10px;
+    border: grey solid 1px;
+    background-color: aliceblue;
+}
+
+.infos_user2 {
+	margin-left: 2%;
+	margin-right: 2%;
+}
+
+.infos_user3 {
+	margin-left: auto;
+	margin-right: 2%;
+}
+
+.photo_profil
+{
+	margin: 5px;
+	width:100px;
+	height:100px;
+	background-color: green;
 }
 
 .user_name {
 	margin: 15px;
+	margin-left: 0px;
 	font-weight: 700;
+	font-size: 150%;
 	text-decoration: underline;
 }
 
@@ -24,12 +64,12 @@
 	text-align: center;
 }
 
-.titre {
-	text-decoration: underline;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	font-weight: 700;
+.input_infos_user form {
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto;
 }
+
 
 #input_name {
 	margin-left: 63px;
@@ -38,8 +78,6 @@
 }
 
 #input_desc {
-	margin-left: 17px;
-	margin-bottom: 10px;
 }
 
 #input_email {
@@ -47,17 +85,17 @@
 	margin-bottom: 10px;
 }
 
-.button_save_modif {
-	background-color: cornflowerblue;
-    color: aliceblue;
-	margin: 10px;
-	
+.input_infos_user button {
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
-.button_cancel_modif {
-	margin: 10px;
-}
 
-.button_delete_user {
-	
+button.button_delete_user {
+	width: auto;
+    background: none;
+    border: none;
+    color: black;
+
 }

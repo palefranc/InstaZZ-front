@@ -24,11 +24,14 @@ const listId = new Array("5e25ecbe9bbc3f0b989b9bd4");
 
 const Index = () =>  <Publication/>;
 const About = () =>  <h2>About</h2>;
-var users_list = () =>  <Users />;
+var users_list = () =>  <Users list_type="research"/>;
+var users_list_abonnees = () =>  <Users list_type="abonnes"/>;
+var users_list_abonnements = () =>  <Users list_type="abonnements"/>;
 const user_profil = () =>  <User />;
 const posts_list = () =>  <ListPublications on_mur={true}/>;
 const new_post = () => <Publication modifiable={true} />;
-const auth = () => <AuthRouter authentified={false} />;
+const auth = () => <AuthRouter authentified={false} signup={false} />;
+const auth_signup = () => <AuthRouter authentified={false} signup={true} />;
 
 
 //var textRech = "";
@@ -70,6 +73,7 @@ function App() {
        <Switch>
 		 <Route path="/" exact component={auth}/>
          <Route path="/auth" exact component={auth}/>
+		 <Route path="/auth/signup" exact component={auth_signup}/>
          <Route path="/about/" component={About}/>
          <Route path="/profil/:idUser" component={User}/>
          <Route path="/profil/" component={user_profil}/>

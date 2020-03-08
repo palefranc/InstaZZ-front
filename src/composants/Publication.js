@@ -159,9 +159,9 @@ export default class Publication extends Component {
 			{
 				if(this.state.post.likes.includes(decoded.userId))
 				{
-					comp = <div className="like"
+					comp = <div className="like on"
 							onClick={(ev, context) => this.removeLike(ev, this)}>
-						<img className="like_on"
+						<img className="like_img"
 							src={logo_like}
 						/>
 						: {this.state.post.likes.length}
@@ -169,9 +169,9 @@ export default class Publication extends Component {
 				}
 				else
 				{
-					comp = <div className="like" 
+					comp = <div className="like off" 
 							onClick={(ev, context) => this.addLike(ev, this)}>
-						<img className="like_off"
+						<img className="like_img"
 							src={logo_like}
 						/>
 						: {this.state.post.likes.length}
@@ -438,7 +438,11 @@ export default class Publication extends Component {
 			if(this.state.post.refUser != decoded.userId)
 			{
 				comp = (<div className="input_commentaire">
-					<input className="input_text_commentaire" type="text" placeholder="Commentaire..." 
+					<textarea
+						id="input_text_commentaire"
+						className="form-control mb-4"
+						rows="3" cols="25"
+						placeholder="Commentaire..."
 						value={this.state.new_commentaire} 
 						onChange={(ev, context) => this.changeCommentaire(ev, this)}
 					/>

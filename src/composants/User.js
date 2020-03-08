@@ -9,6 +9,7 @@ export default class User extends Component {
         super(props);
         this.state = { 
 			user: props.in_user,
+			posts: [],
 			modified_user: props.in_user,
 			modif: false
 		};
@@ -114,7 +115,7 @@ export default class User extends Component {
 		
 		switch(idChamp)
 		{
-			case "input_name":
+			case "defaultRegisterFormLastName":
 				context.setState({ modified_user: {...context.state.modified_user, username: ev.target.value }});
 				break;
 				
@@ -122,11 +123,11 @@ export default class User extends Component {
 				context.setState({ modified_user: {...context.state.modified_user, bio: ev.target.value }});
 				break;
 				
-			case "input_email":
+			case "defaultRegisterFormEmail":
 				context.setState({ modified_user: {...context.state.modified_user, email: ev.target.value }});
 				break;
 				
-			case "input_pwd":
+			case "defaultRegisterFormPassword":
 				context.setState({ modified_user: {...context.state.modified_user, password: ev.target.value }});
 				break;
 				
@@ -272,21 +273,39 @@ export default class User extends Component {
 		return (
 			<div className="user">
 				<div className="infos_user">
-					<div className="user_name">{this.state.user.username}</div>
-					<div className="infos_quantite"> 
-						{this.state.user.posts.length} posts
-						{this.state.user.abonnées.length} abonnés
-						{this.state.user.abonnements.length} abonnements
+				<img className="photo_profil" src="" alt="" />
+					<div className="infos_user2">
+						<div className="infos_quantite">
+							<div className="nb_post">
+								{this.state.posts.length}<br /> posts
+							</div>
+							<a className="nb_abonnees" href="http://localhost:3000/">
+								{this.state.user.abonnées.length}<br /> abonnés
+							</a><br/>
+							<a className="nb_abonnements" href="http://localhost:3000/">
+								{this.state.user.abonnements.length}<br /> abonnements
+							</a>
+						</div>
+						<div className="user_name">{this.state.user.username}</div>
+						
+						description : {this.state.user.bio}<br />
+						email : {this.state.user.email}<br />
 					</div>
-					description : {this.state.user.bio}<br />
-					email : {this.state.user.email}<br />
-					<button onClick={(ev, context, oldUser) => this.toggleModif(ev,this, this.state.user)}>Modifier les infos</button>
+					<div className="infos_user3">
+						<button className="btn btn-info btn-block my-4"
+							onClick={(ev, context, oldUser) => this.toggleModif(ev,this, this.state.user)}>
+							Modifier les infos
+						</button>
+						<button className="btn btn-info btn-block my-4"
+							onClick={(ev, context) => this.addPost(ev,this)}>
+							Ajouter un post
+						</button>
+					</div>
 				</div>
 				<div className="publications_user">
-					<button className="button_ajout" onClick={(ev, context) => this.addPost(ev,this)}>Ajouter un post</button>
 					<hr/>
 					<ListPublications idUser={this.state.user._id} on_mur={false}/>
-					<button className="button_delete_user" onClick={(ev, context) => this.confirmDelete(ev,this)}>Supprimer profil</button>
+					<button className="btn btn-info btn-block my-4 button_delete_user" onClick={(ev, context) => this.confirmDelete(ev,this)}>Supprimer profil</button>
 				</div>
 			</div>
 		);
@@ -294,18 +313,75 @@ export default class User extends Component {
 	
 	getModifUser()
 	{
-		return (
-			<div className="input_infos_user">
-				Abonnements : {this.state.user.abonnements.length}<br />
-				Abonnés : {this.state.user.abonnées.length}<br />
+		var comp = (<div className="input_infos_user">
 				<div className="titre">Modifier les informations vous concernant : </div>
 				nom : <input type="text" id="input_name" value={this.state.modified_user.username} onChange={(ev, context) => this.changeField(ev,this)}/><br />
 				description : <input type="text" id="input_desc" value={this.state.modified_user.bio} onChange={(ev, context) => this.changeField(ev,this)}/><br />
 				email : <input type="text" id="input_email" value={this.state.modified_user.email} onChange={(ev, context) => this.changeField(ev,this)}/><br />
+				<input type="email"
+					id="input_email"
+					className="form-control mb-4"
+					placeholder="E-mail"
+					value={this.state.modified_user.email}
+					onChange={(ev, context) => this.changeField(ev,this)}
+				/>
 				mot de passe : <input type="password" id="input_pwd" onChange={(ev, context) => this.changeField(ev,this)}/>
 				<br />
 				<button className="button_save_modif" onClick={(ev, context) => this.saveModif(ev,this)}>Enregistrer</button>
 				<button className="button_cancel_modif" onClick={(ev, context) => this.toggleModif(ev,this)}>Annuler</button>
+			</div>);
+		
+		return (
+			<div className="input_infos_user">
+				<form className="text-center border border-light p-5" onSubmit={(ev, context) => this.saveModif(ev,this)}>
+
+					<p className="h4 mb-4">Modifier les informations vous concernant : </p>
+
+					<div className="form-row mb-4">
+						<div className="col">
+							<input type="text"
+								id="defaultRegisterFormLastName"
+								className="form-control"
+								placeholder="User name"
+								value={this.state.modified_user.username}
+								onChange={(ev, context) => this.changeField(ev,this)} />
+						</div>
+					</div>
+					
+					<textarea
+						id="input_desc"
+						className="form-control mb-4"
+						rows="3" cols="25"
+						placeholder="Description"
+						value={this.state.modified_user.bio}
+						onChange={(ev, context) => this.changeField(ev,this)}
+					/>
+
+					<input type="email"
+						id="defaultRegisterFormEmail"
+						className="form-control mb-4"
+						placeholder="E-mail"
+						value={this.state.modified_user.email}
+						onChange={(ev, context) => this.changeField(ev,this)}
+					/>
+
+					<input
+						type="password"
+						id="defaultRegisterFormPassword"
+						className="form-control"
+						placeholder="Password"
+						aria-describedby="defaultRegisterFormPasswordHelpBlock"
+						onChange={(ev, context) => this.changeField(ev,this)}
+					/>
+					<small id="defaultRegisterFormPasswordHelpBlock" className="form-text text-muted mb-4">
+						At least 8 characters and 1 digit
+					</small>
+					<hr />
+					
+					<button type="submit" className="btn btn-info my-4 btn-block">Enregistrer</button>
+					<button className="btn btn-info my-4 btn-block" onClick={(ev, context) => this.toggleModif(ev,this)}>Annuler</button>
+
+				</form>
 			</div>
 		);
 	}

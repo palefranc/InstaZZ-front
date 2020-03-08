@@ -7,8 +7,9 @@ import './Users.css';
 
 const jwt = require('jsonwebtoken');
 
-//attribut show: "list" -> montre tous les utilisateurs, avec des donnees reduites
-//         show: "details" -> montre les informations detaillees a propos d'un utilisateur. Affiche le component User
+//attribut show: "research" -> montre tous les utilisateurs dont le text apparait dans le nom
+//         show: "abonnes" -> montre les utilisateurs abonnées à l'utilisateur courrant
+//         show: "abonnements" -> montre les utilisateurs auxquel l'utilisateur courrant s'est abonné
 export default class Users extends Component {
     constructor(props) {
         super(props);
@@ -25,11 +26,11 @@ export default class Users extends Component {
 		}
 		
         this.state = {
-            show: "list",
+            show: props.list_type,
             message: "",
 			text_search: text,
 			currentUser: undefined,
-            users: [],
+            users: undefined,
 			activePage: 1
         };
 		console.log("valeur text : " + this.state.text_search);
@@ -124,6 +125,8 @@ export default class Users extends Component {
 		
 		const token = localStorage.getItem("token");
 		
+		var url = 'http://localhost:5000/users/' + in_page;
+		
 		if(token){
 			
 			const optionReq = {
@@ -131,10 +134,6 @@ export default class Users extends Component {
 				headers:{
 					Authorization: "Bearer " +token,
 					"Content-Type": "application/json"
-				},
-				params:{
-					"id": in_page,
-					"per_page": 5,
 				},
 				url: 'http://localhost:5000/users/'
 			}
@@ -225,8 +224,15 @@ export default class Users extends Component {
 			
         }
 	*/
-		this.getListUsers(this.state.activePage);
-		this.getCurrentUser();
+		if(!this.state.users)
+		{
+			this.getListUsers(this.state.activePage);
+		}
+		
+		if(!this.state.currentUser)
+		{
+			this.getCurrentUser();
+		}
     }
 	
 	getBoutonSubscribe(user) {
@@ -302,14 +308,17 @@ export default class Users extends Component {
 					{context.state.users.map(function (user) {
 						const url = "http://localhost:3000/profil/" + user._id
 						return (<div className="list_users_element">
-							<a href={url}>
-								{user.username}
-							</a>
-							<br />
-							{user.email}
-							<br />
-							{context.getAbonnee(user)}
-							{context.getBoutonSubscribe(user)}
+							<img className="photo_profil" src="" alt="" />
+							<div className="list_users_element2">
+								<a href={url}>
+									{user.username}
+								</a>
+								<br />
+								{user.email}
+								<br />
+								{context.getAbonnee(user)}
+								{context.getBoutonSubscribe(user)}
+							</div>
 							<hr/>
 						</div>);
 					})}
@@ -325,6 +334,88 @@ export default class Users extends Component {
 		
         return comp;
     }
+	
+	showListAbonnees() {
+		const context = this;
+		
+		var comp = undefined;
+		
+		if(this.state.currentUser && this.state.currentUser.abonnées && this.state.currentUser.abonnées.length > 0)
+		{
+			comp = (
+				<div>
+					<div className="errorMessage">{this.state.message}</div>
+					<div className="list_users">
+					{context.state.currentUser.abonnées.map(function (user) {
+						const url = "http://localhost:3000/profil/" + user._id
+						return (<div className="list_users_element">
+							<img className="photo_profil" src="" alt="" />
+							<div className="list_users_element2">
+								<a href={url}>
+									{user.username}
+								</a>
+								<br />
+								{user.email}
+								<br />
+								{context.getAbonnee(user)}
+								{context.getBoutonSubscribe(user)}
+							</div>
+							<hr/>
+						</div>);
+					})}
+					{this.getPagination()}
+					</div>
+				</div>
+			);
+		}
+		else
+		{
+			comp = (<div>Aucun utilisateur ne s'est abonné à vous</div>);
+		}
+		
+		return comp;
+	}
+	
+	showListAbonnements() {
+		const context = this;
+		
+		var comp = undefined;
+		
+		if(this.state.currentUser && this.state.currentUser.abonnements && this.state.currentUser.abonnements.length > 0)
+		{
+			comp = (
+				<div>
+					<div className="errorMessage">{this.state.message}</div>
+					<div className="list_users">
+					{context.state.currentUser.abonnements.map(function (user) {
+						const url = "http://localhost:3000/profil/" + user._id
+						return (<div className="list_users_element">
+							<img className="photo_profil" src="" alt="" />
+							<div className="list_users_element2">
+								<a href={url}>
+									{user.username}
+								</a>
+								<br />
+								{user.email}
+								<br />
+								{context.getAbonnee(user)}
+								{context.getBoutonSubscribe(user)}
+							</div>
+							<hr/>
+						</div>);
+					})}
+					{this.getPagination()}
+					</div>
+				</div>
+			);
+		}
+		else
+		{
+			comp = (<div>Vous n'êtes abonné à aucun utilisateur</div>);
+		}
+		
+		return comp;
+	}
 
     showDetails() {
         //console.log(this.state.users[0]);
@@ -339,10 +430,13 @@ export default class Users extends Component {
     render() {
         var affichage;
 
-        if (this.state.show.toLocaleString()=="details") {
-            affichage = this.showDetails();
+        if (this.state.show.toLocaleString()=="abonnes") {
+            affichage = this.showListAbonnees();
         }
-        else {
+		else if(this.state.show.toLocaleString()=="abonnements") {
+            affichage = this.showListAbonnements();
+        }
+        else if(this.state.show.toLocaleString()=="research") {
             affichage = this.showList();
         }
 
