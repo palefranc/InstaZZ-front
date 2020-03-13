@@ -116,17 +116,36 @@ export default class Publication extends Component {
 			{
 				if(err.response)
 				{
-					if(err.response.data.message == "Echec de l'Authentification"){
-						localStorage.removeItem("token");
-						window.location = "http://localhost:3000/auth";
-					}
-					else
+					if(err.response.data)
 					{
-						console.error(err.response.data.message);
+						if(err.response.data.error)
+						{
+							if(err.response.data.error.message)
+							{
+								console.log(err.response.data.error.message);
+								if(err.response.data.error.message == "Echec de l'Authentification"){
+									localStorage.removeItem("token");
+									window.location = "http://localhost:3000/auth";
+								}
+								else
+								{
+									console.error(err.response.data.error.message);
+								}
+								this.setState({ message: err.response.data.error.message });
+							}
+							else
+							{
+								this.setState({ message: err.response.data.error });
+							}
+						}
+						else
+						{
+							this.setState({ message: err.response.data });
+						}
 					}
-					context.setState({ message:err.response.data.message });
 				}
 			}
+			
 		}
 		
 	  
@@ -446,7 +465,8 @@ export default class Publication extends Component {
 						value={this.state.new_commentaire} 
 						onChange={(ev, context) => this.changeCommentaire(ev, this)}
 					/>
-					<button onClick={(ev, context) => this.addCommentaire(ev, this)}>
+					<button className="btn btn-info my-4 btn-block button_commentaire"
+						onClick={(ev, context) => this.addCommentaire(ev, this)}>
 						Publier
 					</button>
 				</div>);
@@ -494,7 +514,7 @@ export default class Publication extends Component {
         if (this.state.modifiable || this.state.post == undefined) {
             comp = (<div className="ajout_publication">
 				<div className="errorMessage">{this.state.message}</div>
-				<form onSubmit={context.publicatePost}>
+				<form onSubmit={(ev, context) => {this.publicatePost(ev, this)}}>
 					<ImagesUploader
 						name="postImage"
 						withIcon={true}
@@ -507,17 +527,26 @@ export default class Publication extends Component {
 					/>
 					{this.showImage()}
 					<br />
-					<input
+					<textarea
 						type="text"
 						name="description"
+						rows="3" cols="25"
 						placeholder="Ecrivez ici"
 						className="input_description"
 						value={this.state.desc_new_post}
 						onChange={event => this.updatePost(event.target.value)}
 					/>
-					<button type="submit" className="button_publication">Publier</button>
+					<div className="button_action">
+						<button type="submit"
+							className="btn btn-info my-4 btn-block button_publication">
+							Publier
+						</button>
+						<button className="btn btn-info my-4 btn-block button_annuler" 
+							onClick={() => window.location="http://localhost:3000/profil"} >
+							Retour
+						</button>
+					</div>
 				</form>
-				<button className="button_annuler" onClick={() => window.location="http://localhost:3000/profil"}>Retour</button>
             </div>);
         }
         else {

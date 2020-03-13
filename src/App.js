@@ -1,11 +1,12 @@
 import React from 'react';
-//import logo from './logo.svg';
+import logo from './assets/logo_transparent.png';
 import './App.css';
 import dotenv from "dotenv";
 import Publication from "./composants/Publication";
 import ListPublications from "./composants/ListPublications";
 import User from "./composants/User";
 import Users from "./composants/Users";
+import Demandes from "./composants/Demandes";
 import AuthRouter from "./composants/AuthRouter";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -20,13 +21,13 @@ import {
   Switch,
 } from 'react-router-dom';
 
-const listId = new Array("5e25ecbe9bbc3f0b989b9bd4");
 
 const Index = () =>  <Publication/>;
 const About = () =>  <h2>About</h2>;
 var users_list = () =>  <Users list_type="research"/>;
 var users_list_abonnees = () =>  <Users list_type="abonnes"/>;
 var users_list_abonnements = () =>  <Users list_type="abonnements"/>;
+var users_list_demandes = () =>  <Demandes />;
 const user_profil = () =>  <User />;
 const posts_list = () =>  <ListPublications on_mur={true}/>;
 const new_post = () => <Publication modifiable={true} />;
@@ -56,12 +57,13 @@ function App() {
      <div>
      <Navbar bg="dark" variant="dark">
 		<a href="http://localhost:3000/">
-			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png"
+			<img src={logo}
 				alt="InstaZZ" id="logo"/>
 		</a>
         <Nav className="mr-auto">
           <Nav.Link href="http://localhost:3000/profil/">Profil</Nav.Link>
           <Nav.Link href="http://localhost:3000/posts/">Mur</Nav.Link>
+          <Nav.Link href="http://localhost:3000/users/demandes/">Demandes</Nav.Link>
         </Nav>
         <Form inline>
           <FormControl type="text" placeholder="Cherchez un utilisateur" className="mr-sm-2" onChange={setText}/>
@@ -77,6 +79,9 @@ function App() {
          <Route path="/about/" component={About}/>
          <Route path="/profil/:idUser" component={User}/>
          <Route path="/profil/" component={user_profil}/>
+         <Route path="/users/demandes" component={users_list_demandes}/>
+         <Route path="/users/abonnements" component={users_list_abonnements}/>
+         <Route path="/users/abonnes" component={users_list_abonnees}/>
          <Route path="/users/" component={users_list}/>
          <Route path="/posts/" component={posts_list}/>
 		 <Route path="/addpost/" component={new_post}/>

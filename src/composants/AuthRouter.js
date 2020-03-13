@@ -2,6 +2,7 @@
 import axios from '../url/url_bdd';
 import React from "react";
 import './AuthRouter.css';
+import ImagesUploader from 'react-images-upload';
 import User from './User';
 import logo from '../assets/logo_transparent.png';
 import {
@@ -20,6 +21,7 @@ export default class AuthRouter extends Router {
             input_description: "",
             input_email: "",
             input_pwd: "",
+			input_image: undefined,
 			message: "",
 			creationUser: props.signup
         };
@@ -88,15 +90,29 @@ export default class AuthRouter extends Router {
         //this.state["input_pwd"] = ev.target.value;
     }
 	
-	changeName(ev) {
-		this.setState({ input_user_name: ev.target.value});
-        //this.state["input_user_name"] = ev.target.value;
-    }
+	getImage(ev, img, context) {
+		
+		//context.parseImage(img[0])
 
-    changeDesc(ev) {
-		this.setState({ input_description: ev.target.value});
-        //this.state["input_description"] = ev.target.value;
-    }
+		console.log("image chargée");
+		//console.log(img);
+
+		context.setState({
+		  input_image: img[0]
+		});
+	}
+	
+	showImage()
+	{
+		var comp = undefined;
+		
+		if(this.state.input_image)
+		{
+			comp = <img className="apercuImage" src={this.state.input_image}/>
+		}
+		
+		return comp;
+	}
 
     authUser(ev, context) {
 		ev.preventDefault();
@@ -106,6 +122,31 @@ export default class AuthRouter extends Router {
 	async createUser(ev, context){
 		ev.preventDefault();
 		
+		const token = localStorage.getItem("token");
+		
+		const formDatas = new FormData(ev.target);
+		
+		console.log(formDatas);
+		console.log(formDatas.values());
+		console.log(formDatas.get("profileImage"));
+		console.log(formDatas.get("username"));
+		console.log(formDatas.get("email"));
+		console.log(formDatas.get("bio"));
+		console.log(formDatas.get("status"));
+		
+		const optionReq = {
+			method: 'POST',
+			headers: {
+				Authorization: "Bearer "+token,
+				"Content-Type": "multipart/form-data",
+			},
+			data: formDatas,
+			url: 'http://localhost:5000/users/signup'
+		}
+		
+		console.log(optionReq);
+		
+		/*
 		var optionReq = {
 			method: 'POST',
 			data: {
@@ -117,6 +158,7 @@ export default class AuthRouter extends Router {
 			},
 			url: 'http://localhost:5000/users/signup'
 		}
+		*/
 		
 		try {
 			const resp = await axios(optionReq);
@@ -135,7 +177,7 @@ export default class AuthRouter extends Router {
 					
 					//context.setState({ auth: true});
 					
-					//window.location = "http://localhost:3000/profil/";
+					window.location = "http://localhost:3000/profil/";
 				}
 			}
 			
@@ -157,6 +199,61 @@ export default class AuthRouter extends Router {
 		
 	}
 	
+	getChoicePrivacy()
+	{
+		var comp = undefined;
+		
+		if(this.state.input_is_private)
+		{
+			comp = (
+				<div className="select_privacy">
+					<div>
+						<input type="radio" id="public" name="status" value="public"
+							onChange={(ev) => { this.changePrivacy(ev) }} />
+						<label>Public</label>
+					</div>
+					<div>
+						<input type="radio" id="private" name="status" value="private"
+							checked onChange={(ev) => { this.changePrivacy(ev) }} />
+						<label>Privée</label>
+					</div>
+				</div>
+			);
+		}
+		else
+		{
+			comp = (
+				<div className="select_privacy">
+					<div>
+						<input type="radio" id="public" name="status" value="public"
+							onChange={(ev, context) => {this.changePrivacy(ev, this)}} />
+						<label>Public</label>
+					</div>
+					<div>
+						<input type="radio" id="private" name="status" value="private"
+							 onChange={(ev, context) => {this.changePrivacy(ev, this)}} />
+						<label>Privée</label>
+					</div>
+				</div>
+			);
+		}
+		
+		return comp;
+	}
+	
+	changePrivacy(ev)
+	{
+		console.log(ev.target.value);
+		if (ev.target.value == "private")
+		{
+			this.setState({ privacy: true });
+		}
+		else if (ev.target.value == "public")
+		{
+			this.setState({ privacy: false });
+		}
+	}
+	
 	activeCreation(ev, context){
 		context.state["message"] = "";
 		context.setState({ creationUser:true });
@@ -175,7 +272,7 @@ export default class AuthRouter extends Router {
 			</div>
 				<form className="text-center border border-light p-5" onSubmit={(ev, context) => this.authUser(ev, this)}>
 
-					<p className="h4 mb-4">Sign in</p>
+					<p className="h4 mb-4">Connexion</p>
 
 					<input type="email" 
 						id="defaultLoginFormEmail" 
@@ -187,26 +284,14 @@ export default class AuthRouter extends Router {
 					<input type="password"
 						id="defaultLoginFormPassword"
 						className="form-control mb-4"
-						placeholder="Password" 
+						placeholder="Mot de passe" 
 						onChange={(ev) => { this.changePwd(ev); } }
 					/>
 
-					<div className="d-flex justify-content-around">
-						<div>
-							<div className="custom-control custom-checkbox">
-								<input type="checkbox" className="custom-control-input" id="defaultLoginFormRemember" />
-								<label className="custom-control-label">Remember me</label>
-							</div>
-						</div>
-						<div>
-							<a href="">Forgot password?</a>
-						</div>
-					</div>
+					<button className="btn btn-info btn-block my-4" type="submit">Connexion</button>
 
-					<button className="btn btn-info btn-block my-4" type="submit">Sign in</button>
-
-					<p>Not a member?
-						<a href="/auth/signup">Register</a>
+					<p>Pas encore membre?
+						<a href="/auth/signup">S'inscrire</a>
 					</p>
 
 				</form>
@@ -217,87 +302,65 @@ export default class AuthRouter extends Router {
 	
 	getCreateUser()
 	{
-		const comp = (<div>
-				<form onSubmit={(ev, context) => this.createUser(ev, this)}>
-					<div>
-						Nom d'utilisateur : 
-						<input type="text" 
-							id="u_name" 
-							placeholder="Nom" 
-							value={this.state.input_user_name}
-							onChange={(ev) => { this.changeName(ev) }}
-						/><br />
-						Email : 
-						<input type="text"
-							id="u_mail"
-							placeholder="Mail"
-							value={this.state.input_email}
-							onChange={(ev) => { this.changeMail(ev) }}
-						/><br />
-						Mot de passe : 
-						<input type="password"
-							id="u_pwd"
-							placeholder="Mot de passe"
-							value={this.state.input_password}
-							onChange={(ev) => { this.changePwd(ev) }}
-						/><br />
-						Description : 
-						<input type="text"
-							id="u_desc"
-							placeholder="Parlez de vous..."
-							value={this.state.input_description}
-							onChange={(ev) => { this.changeDesc(ev) }}
-						/><br />
-					</div>
-					<button type="submit">Enregistrer</button>
-				</form>
-				<button onClick={(ev, context) => this.desactiveCreation(ev, this)}>Annuler</button><br />
-				<div className="errorMessage">{this.state.message}</div>
-			</div>);
-		
+		const context = this;
 		return(
 			<div className="signup">
 				<form className="text-center border border-light p-5" onSubmit={(ev, context) => this.createUser(ev, this)}>
 
-					<p className="h4 mb-4">Sign up</p>
+					<p className="h4 mb-4">S'inscrire</p>
 
 					<div className="form-row mb-4">
 						<div className="col">
 							<input type="text"
 								id="defaultRegisterFormLastName"
 								className="form-control"
-								placeholder="User name"
-								onChange={(ev) => { this.changeName(ev) }} />
+								name="username"
+								placeholder="Pseudo" />
 						</div>
 					</div>
+					
+					<ImagesUploader
+						name="profileImage"
+						withIcon={true}
+						multiple={false}
+						optimisticPreviews
+						buttonText='Chargez une image'
+						onChange={(ev, img) => this.getImage(ev, img, this)}
+						imgExtension={['.jpg', '.gif', '.png', '.gif']}
+						maxFileSize={5242880}
+					/>
+					{this.showImage()}
 
 					<input type="email"
 						id="defaultRegisterFormEmail"
 						className="form-control mb-4"
+						name="email"
 						placeholder="E-mail"
-						onChange={(ev) => { this.changeMail(ev) }}
 					/>
 
 					<input
 						type="password"
 						id="defaultRegisterFormPassword"
 						className="form-control"
-						placeholder="Password"
+						name="password"
+						placeholder="Mot de passe"
 						aria-describedby="defaultRegisterFormPasswordHelpBlock"
-						onChange={(ev) => { this.changePwd(ev) }}
 					/>
 					<small id="defaultRegisterFormPasswordHelpBlock" className="form-text text-muted mb-4">
 						At least 8 characters and 1 digit
 					</small>
 					
+					<textarea
+						id="input_text_commentaire"
+						className="form-control mb-4"
+						name="bio"
+						rows="3" cols="25"
+						placeholder="Parlez de vous..."
+						value={this.state.input_description} 
+					/>
+					{context.getChoicePrivacy()}
 					<button className="btn btn-info my-4 btn-block" type="submit">Sign in</button>
-					<hr />
-
-					<p>By clicking
-						<em>Sign up</em> you agree to our
-						<a href="" target="_blank"> terms of service</a>
-					</p>
-
+					
 				</form>
 			</div>
 		);

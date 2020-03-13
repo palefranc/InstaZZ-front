@@ -10,14 +10,17 @@ import Pagination from "react-js-pagination";
 const jwt = require('jsonwebtoken');
 
 export default class ListPublications extends Component {
-  constructor(props) {
-    super(props);
-      this.state = {
-		  is_on_mur: props.on_mur,
-          id_user: props.idUser,
-		  message:"",
-		  activePage:1,
-		  listPubli : []
+	constructor(props) {
+		super(props);
+		
+		console.log(props.idUser)
+	
+		this.state = {
+			is_on_mur: props.on_mur,
+			id_user: props.idUser,
+			message:"",
+			activePage:1,
+			listPubli : []
 		};
 	}
   
@@ -38,12 +41,40 @@ export default class ListPublications extends Component {
 		
 		const token = localStorage.getItem("token");
 		
-		var optionReq = {
-			method: 'GET',
-			headers: {
-				Authorization: "Bearer "+token
-			},
-			url: "http://localhost:5000/posts/"
+		var optionReq = undefined;
+		
+		const decoded = jwt.verify(token, process.env.REACT_APP_JWT_KEY);
+		
+		if(decoded)
+		{
+			if(this.state.id_user && this.state.id_user != decoded.userId)
+			{
+				optionReq = {
+					method: 'GET',
+					headers: {
+						Authorization: "Bearer "+token
+					},
+					params: 
+					{
+						page: ev
+					},
+					url: "http://localhost:5000/posts/user/"+this.state.id_user
+				}
+			}
+			else
+			{
+				optionReq = {
+					method: 'GET',
+					headers: {
+						Authorization: "Bearer "+token
+					},
+					params: 
+					{
+						page: ev
+					},
+					url: "http://localhost:5000/posts"
+				}
+			}
 		}
 		
 		try
@@ -182,7 +213,8 @@ export default class ListPublications extends Component {
 				{
 					comp = (<div className="user_publication">
 						<Publication post={in_post}/>
-						<button onClick={(ev, context, post) => this.confirmDeletePost(ev, this, in_post)}>Supprimer le post</button>
+						<button className="btn btn-info my-4 btn-block button_supprimer"
+							onClick={(ev, context, post) => this.confirmDeletePost(ev, this, in_post)}>Supprimer le post</button>
 						<hr/>
 					</div>);
 				}

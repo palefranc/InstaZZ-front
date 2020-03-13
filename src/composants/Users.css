@@ -22,3 +22,15 @@
 	height: 30px;
 	background-color: honeydew;
 }
+
+.button_abonner
+{
+	width: fit-content!important;
+    margin-right: auto;
+}
+
+.button_desabonner
+{
+	width: fit-content!important;
+    margin-right: auto;
+}

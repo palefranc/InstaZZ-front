@@ -97,8 +97,20 @@ export default class Users extends Component {
 		try
 		{
 			const res = await axios(options);
+			console.log(res);
 
 			if(res && res.status == 200){
+				/*
+				if(res.data)
+				{
+					console.log(res.data);
+					const user = res.data;
+					
+					//this.setState({ currentUser: user });
+				}
+				*/
+				
+				
 				var newUser = this.state.currentUser;
 				
 				if(newUser)
@@ -106,6 +118,7 @@ export default class Users extends Component {
 					newUser.abonnements = newUser.abonnements.filter(function(id) { return id!=user._id; });
 					this.setState({ currentUser: newUser });
 				}
+				
 			}
 		}
 		catch (err)
@@ -125,7 +138,6 @@ export default class Users extends Component {
 		
 		const token = localStorage.getItem("token");
 		
-		var url = 'http://localhost:5000/users/' + in_page;
 		
 		if(token){
 			
@@ -135,7 +147,7 @@ export default class Users extends Component {
 					Authorization: "Bearer " +token,
 					"Content-Type": "application/json"
 				},
-				url: 'http://localhost:5000/users/'
+				url: 'http://localhost:5000/users/UsersList/'+in_page
 			}
 			
 			console.log(optionReq);
@@ -148,7 +160,7 @@ export default class Users extends Component {
 					const users = res.data.users;
 					console.log(users);
 					
-					if (users) {
+					if (users && users.length > 0) {
 						const filteredUsers = users.filter(function (user) { return (user.username.includes(context.state.text_search));});
 						
 						this.setState({
@@ -194,10 +206,22 @@ export default class Users extends Component {
 					const user = res.data;
 
 					
-					if (user) {
-						this.setState({
-							currentUser: user
-						})
+					if (user) { 
+						if(this.state.show == "abonnes")
+						{
+							this.setState({ currentUser: user, users: user.abonnées })
+						}
+						else if(this.state.show == "abonnements")
+						{
+							this.setState({ currentUser: user, users: user.abonnements })
+						}
+						else
+						{
+							this.setState({
+								currentUser: user
+							})
+						}
+						
 					}
 				}
 				
@@ -224,14 +248,16 @@ export default class Users extends Component {
 			
         }
 	*/
-		if(!this.state.users)
-		{
-			this.getListUsers(this.state.activePage);
-		}
 		
 		if(!this.state.currentUser)
 		{
 			this.getCurrentUser();
+		}
+		
+		
+		if(!this.state.users && this.state.show == "research")
+		{
+			this.getListUsers(this.state.activePage);
 		}
     }
 	
@@ -246,13 +272,13 @@ export default class Users extends Component {
 			comp = <p className="ItsMe">C'est moi</p>
 		}
 		else{
-			if(this.state.currentUser && this.state.currentUser.abonnements.includes(user._id))
+			if(this.state.currentUser && this.state.currentUser.abonnements.includes(user))
 			{
-				comp = <button onClick={(ev, us) => this.unsubscribe(ev, user)}>Se desabonner</button>;
+				comp = <button className="btn btn-info my-4 btn-block button_abonner" onClick={(ev, us) => this.unsubscribe(ev, user)}>Se desabonner</button>;
 			}
 			else
 			{
-				comp = <button onClick={(ev, us) => this.subscribe(ev, user)}>S'abonner</button>;
+				comp = <button className="btn btn-info my-4 btn-block button_desabonner" onClick={(ev, us) => this.subscribe(ev, user)}>S'abonner</button>;
 			}
 		}
 			
@@ -263,7 +289,7 @@ export default class Users extends Component {
 	getAbonnee(user){
 		let comp = undefined;
 		
-		if(this.state.currentUser && this.state.currentUser.abonnées.includes(user._id))
+		if(this.state.currentUser && this.state.currentUser.abonnées.includes(user))
 		{
 			comp = <div>S'est abonné(e) à moi</div>;
 		}
@@ -308,9 +334,9 @@ export default class Users extends Component {
 					{context.state.users.map(function (user) {
 						const url = "http://localhost:3000/profil/" + user._id
 						return (<div className="list_users_element">
-							<img className="photo_profil" src="" alt="" />
+							<img className="photo_profil" src={"http://localhost:5000" + user.image} alt="" />
 							<div className="list_users_element2">
-								<a href={url}>
+								<a className="user_name" href={url}>
 									{user.username}
 								</a>
 								<br />
@@ -329,7 +355,9 @@ export default class Users extends Component {
 		}
 		else
 		{
-			comp = comp = (<div>Aucun utilisateur n'a été trouvé</div>);
+			comp = (<div>
+				Aucun utilisateur n'a été trouvé
+			</div>);
 		}
 		
         return comp;
@@ -349,9 +377,9 @@ export default class Users extends Component {
 					{context.state.currentUser.abonnées.map(function (user) {
 						const url = "http://localhost:3000/profil/" + user._id
 						return (<div className="list_users_element">
-							<img className="photo_profil" src="" alt="" />
+							<img className="photo_profil" src={"http://localhost:5000" + user.image} alt="" />
 							<div className="list_users_element2">
-								<a href={url}>
+								<a className="user_name" href={url}>
 									{user.username}
 								</a>
 								<br />
@@ -390,9 +418,9 @@ export default class Users extends Component {
 					{context.state.currentUser.abonnements.map(function (user) {
 						const url = "http://localhost:3000/profil/" + user._id
 						return (<div className="list_users_element">
-							<img className="photo_profil" src="" alt="" />
+							<img className="photo_profil" src={"http://localhost:5000" + user.image} alt="" />
 							<div className="list_users_element2">
-								<a href={url}>
+								<a className="user_name" href={url}>
 									{user.username}
 								</a>
 								<br />

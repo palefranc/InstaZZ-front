@@ -20,3 +20,10 @@
 	height: 30px;
 	background-color: honeydew;
 }
+
+.button_supprimer
+{
+	width: fit-content!important;
+    margin-left: auto;
+    margin-right: auto;	
+}

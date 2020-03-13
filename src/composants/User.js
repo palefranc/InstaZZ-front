@@ -1,8 +1,11 @@
 import axios from '../url/url_bdd';
 import React, { Component } from "react";
+
 import ListPublications from "./ListPublications";
 
 import './User.css';
+
+const jwt = require('jsonwebtoken');
 
 export default class User extends Component {
     constructor(props) {
@@ -34,6 +37,14 @@ export default class User extends Component {
 			if(idUser)
 			{
 				console.log("Il faut afficher le user " + idUser);
+				
+				optionReq = {
+					method: 'GET',
+					headers:{
+						Authorization: "Bearer " +token
+					},
+					url: 'http://localhost:5000/users/user/'+idUser
+				}
 			}
 			else
 			{
@@ -268,44 +279,115 @@ export default class User extends Component {
 		}
 	}
 	
+	getInfosQuantite()
+	{
+		var comp = undefined;
+		
+		const token = localStorage.getItem("token");
+		const decoded = jwt.verify(token, process.env.REACT_APP_JWT_KEY);
+		
+		if(decoded.userId == this.state.user._id)
+		{
+			comp = (
+				<div className="infos_quantite">
+					<div className="nb_post">
+						{this.state.posts.length}<br /> posts
+					</div>
+					<a className="nb_abonnees" href="http://localhost:3000/users/abonnes">
+						{this.state.user.abonnées.length}<br /> abonnés
+					</a><br/>
+					<a className="nb_abonnements" href="http://localhost:3000/users/abonnements">
+						{this.state.user.abonnements.length}<br /> abonnements
+					</a><br/>
+					<a className="nb_demandes" href="http://localhost:3000/users/demandes">
+						{this.state.user.demandes.length}<br /> demandes
+					</a>
+				</div>
+			);
+		}
+		else
+		{
+			comp = (
+				<div className="infos_quantite">
+					<div className="nb_post">
+						{this.state.posts.length}<br /> posts
+					</div>
+					<div className="nb_abonnees">
+						{this.state.user.abonnées.length}<br /> abonnés
+					</div><br/>
+					<div className="nb_abonnements">
+						{this.state.user.abonnements.length}<br /> abonnements
+					</div>
+				</div>
+			);
+		}
+		
+		return comp;
+	}
+	
+	getButtonsAction()
+	{
+		var comp = undefined;
+		
+		const token = localStorage.getItem("token");
+		const decoded = jwt.verify(token, process.env.REACT_APP_JWT_KEY);
+		
+		if(decoded.userId == this.state.user._id)
+		{
+			comp = (
+				<div className="infos_user3">
+					<button className="btn btn-info btn-block my-4"
+						onClick={(ev, context, oldUser) => this.toggleModif(ev,this, this.state.user)}>
+						Modifier les infos
+					</button>
+					<button className="btn btn-info btn-block my-4"
+						onClick={(ev, context) => this.addPost(ev,this)}>
+						Ajouter un post
+					</button>
+				</div>
+			);
+		}
+		
+		return comp;
+	}
+	
+	getButtonDelete()
+	{
+		var comp = undefined;
+		
+		const token = localStorage.getItem("token");
+		const decoded = jwt.verify(token, process.env.REACT_APP_JWT_KEY);
+		
+		if(decoded.userId == this.state.user._id)
+		{
+			comp = (<button className="btn btn-info btn-block my-4 button_delete_user"
+				onClick={(ev, context) => this.confirmDelete(ev,this)}>Supprimer profil</button>);
+		}
+		
+		return comp;
+	}
+	
 	getInfoUser ()
 	{
+		const context = this;
+		
 		return (
 			<div className="user">
 				<div className="infos_user">
-				<img className="photo_profil" src="" alt="" />
+				<img className="photo_profil" src={"http://localhost:5000" + this.state.user.image} alt="" />
 					<div className="infos_user2">
-						<div className="infos_quantite">
-							<div className="nb_post">
-								{this.state.posts.length}<br /> posts
-							</div>
-							<a className="nb_abonnees" href="http://localhost:3000/">
-								{this.state.user.abonnées.length}<br /> abonnés
-							</a><br/>
-							<a className="nb_abonnements" href="http://localhost:3000/">
-								{this.state.user.abonnements.length}<br /> abonnements
-							</a>
-						</div>
+						{context.getInfosQuantite()}
 						<div className="user_name">{this.state.user.username}</div>
 						
 						description : {this.state.user.bio}<br />
 						email : {this.state.user.email}<br />
 					</div>
-					<div className="infos_user3">
-						<button className="btn btn-info btn-block my-4"
-							onClick={(ev, context, oldUser) => this.toggleModif(ev,this, this.state.user)}>
-							Modifier les infos
-						</button>
-						<button className="btn btn-info btn-block my-4"
-							onClick={(ev, context) => this.addPost(ev,this)}>
-							Ajouter un post
-						</button>
-					</div>
+					{context.getButtonsAction()}
 				</div>
 				<div className="publications_user">
 					<hr/>
 					<ListPublications idUser={this.state.user._id} on_mur={false}/>
-					<button className="btn btn-info btn-block my-4 button_delete_user" onClick={(ev, context) => this.confirmDelete(ev,this)}>Supprimer profil</button>
+					{context.getButtonDelete()}
 				</div>
 			</div>
 		);

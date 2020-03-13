@@ -8,6 +8,11 @@
     margin-right: auto;
 }
 
+.fileUploader
+{
+	width: 100%;
+}
+
 .signup {
 	width: 400px;
     margin-left: auto;
@@ -20,6 +25,20 @@ input#u_mail {
 
 input#u_pwd {
 	margin: 4px;
+}
+
+.select_privacy
+{
+	display: flex;
+	margin-left: auto;
+	margin-right: auto;
+	width: fit-content;
+}
+
+.select_privacy div {
+	margin-left: 5px;
+	margin-right: 5px;
+	
 }
 
 .blank {

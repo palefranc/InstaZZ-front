@@ -1,0 +1,33 @@
+.demande_element
+{
+	display: flex;
+	border-bottom: grey solid 1px;
+	padding: 5px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.photo_profil
+{
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.demande_element2
+{
+	margin-left: 10px;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.button_action_demande
+{
+	margin-left: auto;
+	margin-right: 50px;
+	margin-top: auto;
+    margin-bottom: auto;
+}
+
+.button_accepter_demande
+{
+}

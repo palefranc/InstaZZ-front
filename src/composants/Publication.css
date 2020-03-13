@@ -13,7 +13,6 @@
 		border: gray 1px solid;
 		margin: auto;
 		width: fit-content;
-		cursor: pointer;
 		padding-right: 5px;
 		border-radius: 5px;
 		margin-bottom: 10px;
@@ -22,16 +21,18 @@
 		.like_logo {
 			width:20px;
 			height:20px;
-			background-color: cyan;
 			border-radius: 5px;
+			margin: 5px;
 		}
 		
 	.like.on {
 		background-color: lightcyan;
+		cursor: pointer;
 	}
 	
 	
 	.like.off {
+		cursor: pointer;
 	}
 	
 	.like_img
@@ -62,7 +63,9 @@
 	
 
 .ajout_publication {
-	
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto;
 }
 	.apercuImage {
 		height: 55%;
@@ -74,10 +77,30 @@
 		width: 25%;
 	}
 	
+	.button_action {
+		display: flex;
+		width: fit-content;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
 	.button_publication {
-		margin: 2px;
+		width: fit-content!important;
+		margin: 5px;
+	}
+	
+	.button_commentaire
+	{
+		width: fit-content!important;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	.button_annuler {
+		width: fit-content!important;
+		margin: 5px;
 	}
 	
 	.input_description {
-		width: 50%;
+		width: 100%;
 	}
