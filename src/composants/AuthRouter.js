@@ -159,7 +159,7 @@ export default class AuthRouter extends Router {
 			url: 'http://localhost:5000/users/signup'
 		}
 		*/
-		
+		/*
 		try {
 			const resp = await axios(optionReq);
 			
@@ -196,7 +196,7 @@ export default class AuthRouter extends Router {
 				}
 			}
 		}
-		
+		*/
 	}
 	
 	getChoicePrivacy()
