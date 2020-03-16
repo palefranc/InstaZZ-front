@@ -2,10 +2,12 @@ import axios from '../url/url_bdd';
 import React, { Component } from "react";
 
 import ListPublications from "./ListPublications";
+import Abonnement from "./Abonnement";
 
 import './User.css';
 
 const jwt = require('jsonwebtoken');
+//var ReactTestUtils = require('react-dom/test-utils');
 
 export default class User extends Component {
     constructor(props) {
@@ -29,6 +31,8 @@ export default class User extends Component {
 			{
 				idUser = this.props.match.params.idUser;
 			}
+			
+			console.log(idUser);
 			
 			var optionReq = undefined;
 			
@@ -148,6 +152,56 @@ export default class User extends Component {
 	}
 	
 	
+	getChoicePrivacy()
+	{
+		var comp = undefined;
+		
+		if(this.state.modified_user.status == "private")
+		{
+			comp = (
+				<div className="select_privacy">
+					<div>
+						<input type="radio" id="public" name="status" value="public"
+							onChange={(ev) => { this.changePrivacy(ev) }} />
+						<label>Public</label>
+					</div>
+					<div>
+						<input type="radio" id="private" name="status" value="private"
+							checked onChange={(ev) => { this.changePrivacy(ev) }} />
+						<label>Privée</label>
+					</div>
+				</div>
+			);
+		}
+		else
+		{
+			comp = (
+				<div className="select_privacy">
+					<div>
+						<input type="radio" id="public" name="status" value="public"
+							checked onChange={(ev, context) => {this.changePrivacy(ev, this)}} />
+						<label>Public</label>
+					</div>
+					<div>
+						<input type="radio" id="private" name="status" value="private"
+							 onChange={(ev, context) => {this.changePrivacy(ev, this)}} />
+						<label>Privée</label>
+					</div>
+				</div>
+			);
+		}
+		
+		return comp;
+	}
+	
+	changePrivacy(ev)
+	{
+		console.log(ev.target.value);
+		
+		this.setState({ modified_user: {...this.state.modified_user, status: ev.target.value }});
+	}
+	
+	
 	async saveModif(ev, context)
 	{
 		
@@ -171,6 +225,11 @@ export default class User extends Component {
 		if(!(context.state.user.password == context.state.modified_user.password))
 		{
 			modifiedChamps.push({ propName: "password" , value: context.state.modified_user.password });
+		}
+		
+		if(!(context.state.user.status == context.state.modified_user.status))
+		{
+			modifiedChamps.push({ propName: "status" , value: context.state.modified_user.status });
 		}
 		
 		const token = localStorage.getItem("token");
@@ -325,12 +384,26 @@ export default class User extends Component {
 		return comp;
 	}
 	
+	getPrivacy()
+	{
+		var comp = undefined;
+		
+		if(this.state.user.status == "private")
+		{
+			comp = <div className="privacy">Utilisateur privé</div>
+		}
+		
+		return comp;
+	}
+	
 	getButtonsAction()
 	{
 		var comp = undefined;
 		
 		const token = localStorage.getItem("token");
 		const decoded = jwt.verify(token, process.env.REACT_APP_JWT_KEY);
+		
+		console.log(this.state.user);
 		
 		if(decoded.userId == this.state.user._id)
 		{
@@ -347,6 +420,37 @@ export default class User extends Component {
 				</div>
 			);
 		}
+		else
+		{
+			comp = <Abonnement user={this.state.user} />
+		}
+		
+		return comp;
+	}
+	
+	getPublications()
+	{
+		var comp = undefined;
+		
+		const token = localStorage.getItem("token");
+		const decoded = jwt.verify(token, process.env.REACT_APP_JWT_KEY);
+		
+		/*
+		if(decoded.userId != this.state.user._id && this.state.user.status == "private" && )
+		{
+			comp = (<div className="error_publications">
+				Vous ne pouvez pas voir les posts d'un utilisateur privée.
+				<br />
+				Si vous voulez les voir, abonnez-vous à cet utilisateur.
+			</div>)
+		}
+		else
+		{
+			comp = (<ListPublications idUser={this.state.user._id} on_mur={false}/>);
+		}
+		*/
+		
+		comp = (<ListPublications idUser={this.state.user._id} on_mur={false}/>);
 		
 		return comp;
 	}
@@ -381,12 +485,13 @@ export default class User extends Component {
 						
 						description : {this.state.user.bio}<br />
 						email : {this.state.user.email}<br />
+						{context.getPrivacy()}
 					</div>
 					{context.getButtonsAction()}
 				</div>
 				<div className="publications_user">
 					<hr/>
-					<ListPublications idUser={this.state.user._id} on_mur={false}/>
+					{context.getPublications()}
 					{context.getButtonDelete()}
 				</div>
 			</div>
@@ -395,24 +500,6 @@ export default class User extends Component {
 	
 	getModifUser()
 	{
-		var comp = (<div className="input_infos_user">
-				<div className="titre">Modifier les informations vous concernant : </div>
-				nom : <input type="text" id="input_name" value={this.state.modified_user.username} onChange={(ev, context) => this.changeField(ev,this)}/><br />
-				description : <input type="text" id="input_desc" value={this.state.modified_user.bio} onChange={(ev, context) => this.changeField(ev,this)}/><br />
-				email : <input type="text" id="input_email" value={this.state.modified_user.email} onChange={(ev, context) => this.changeField(ev,this)}/><br />
-				<input type="email"
-					id="input_email"
-					className="form-control mb-4"
-					placeholder="E-mail"
-					value={this.state.modified_user.email}
-					onChange={(ev, context) => this.changeField(ev,this)}
-				/>
-				mot de passe : <input type="password" id="input_pwd" onChange={(ev, context) => this.changeField(ev,this)}/>
-				<br />
-				<button className="button_save_modif" onClick={(ev, context) => this.saveModif(ev,this)}>Enregistrer</button>
-				<button className="button_cancel_modif" onClick={(ev, context) => this.toggleModif(ev,this)}>Annuler</button>
-			</div>);
-		
 		return (
 			<div className="input_infos_user">
 				<form className="text-center border border-light p-5" onSubmit={(ev, context) => this.saveModif(ev,this)}>
@@ -458,6 +545,7 @@ export default class User extends Component {
 					<small id="defaultRegisterFormPasswordHelpBlock" className="form-text text-muted mb-4">
 						At least 8 characters and 1 digit
 					</small>
+					{this.getChoicePrivacy()}
 					<hr />
 					
 					<button type="submit" className="btn btn-info my-4 btn-block">Enregistrer</button>

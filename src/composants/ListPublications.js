@@ -20,6 +20,7 @@ export default class ListPublications extends Component {
 			id_user: props.idUser,
 			message:"",
 			activePage:1,
+			nbTotalElement: 0,
 			listPubli : []
 		};
 	}
@@ -61,9 +62,10 @@ export default class ListPublications extends Component {
 					url: "http://localhost:5000/posts/user/"+this.state.id_user
 				}
 			}
-			else
+			else if(this.state.is_on_mur)
 			{
-				optionReq = {
+				optionReq = 
+				{
 					method: 'GET',
 					headers: {
 						Authorization: "Bearer "+token
@@ -71,6 +73,22 @@ export default class ListPublications extends Component {
 					params: 
 					{
 						page: ev
+					},
+					url: "http://localhost:5000/posts/Abonnements/"
+				}
+			}
+			else
+			{
+				optionReq = 
+				{
+					method: 'GET',
+					headers: {
+						Authorization: "Bearer "+token
+					},
+					params: 
+					{
+						page: ev,
+						per_page: 5
 					},
 					url: "http://localhost:5000/posts"
 				}
@@ -81,8 +99,10 @@ export default class ListPublications extends Component {
 		{
 			const res = await axios(optionReq);
 			
+			console.log(res);
+			
 			if(res){
-				const posts = res.data;
+				const posts = res.data.posts;
 				
 				
 				if (posts) {
@@ -90,34 +110,11 @@ export default class ListPublications extends Component {
 					posts.forEach(post => listPublications.push(post))
 				}
 				
-				if(this.state.is_on_mur)
-				{
-					
-					var optionReq2 = {
-						method: 'GET',
-						headers: {
-							Authorization: "Bearer "+token
-						},
-						url: "http://localhost:5000/posts/Abonnements/"
-					}
-					
-					const res2 = await axios(optionReq2);
-					
-					if(res2)
-					{
-						const posts2 = res2.data;
-				
-				
-						if (posts2) {
-							console.log(posts2);
-							posts2.forEach(post => listPublications.push(post))
-						}
-					}
-				}
-				
 				listPublications.sort(function (post1, post2) {return post2.date - post1.date});
 						
-				this.setState({ listPubli: listPublications })
+				this.setState({ listPubli: listPublications,
+					nbTotalElement: res.data.total
+				})
 			}
 			
 		}
@@ -125,16 +122,34 @@ export default class ListPublications extends Component {
 		{
 			if(err.response)
 			{
-				if(err.response.data.message == "Echec de l'Authentification"){
-					localStorage.removeItem("token");
-					window.location = "http://localhost:3000/auth";
+				if(err.response.data)
+				{
+					if(err.response.data.message)
+					{
+						if(err.response.data.message == "Echec de l'Authentification"){
+							localStorage.removeItem("token");
+							window.location = "http://localhost:3000/auth";
+						}
+						else
+						{
+							console.error(err.response.data.message);
+							this.setState({ message:err.response.data.message });
+						}
+					}
+					else
+					{
+						this.setState({ message:err.response.data });
+					}
 				}
 				else
 				{
-					console.error(err.response.data.message);
+					this.setState({ message:err.response });
 				}
 			}
-			this.setState({ message:err.response.data.message });
+			else
+			{
+				this.setState({ message:err });
+			}
 		}
 			
 	}
@@ -154,6 +169,8 @@ export default class ListPublications extends Component {
 			},
 			url: "http://localhost:5000/posts/"+post._id
 		}
+		
+		console.log(optionReq);
 		
 		try
 		{
@@ -250,7 +267,7 @@ export default class ListPublications extends Component {
 				<Pagination
 					activePage={this.state.activePage}
 					itemsCountPerPage={5}
-					totalItemsCount={25}
+					totalItemsCount={this.state.nbTotalElement}
 					pageRangeDisplayed={5}
 					onChange={(ev, context) => this.changePage(ev, this)}
 				/>
@@ -258,7 +275,14 @@ export default class ListPublications extends Component {
 		}
 		else
 		{
-			comp = (<div>Aucun post à afficher</div>);
+			if(this.state.message && this.state.message != "")
+			{
+				comp = (<div className="errorMessage">{this.state.message}</div>);
+			}
+			else
+			{
+				comp = (<div className="message_empty" >Aucun post à afficher</div>);
+			}
 		}
 		
 		return comp;

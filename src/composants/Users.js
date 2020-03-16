@@ -3,6 +3,7 @@ import axios from '../url/url_bdd';
 import React, { Component } from "react";
 import User from './User';
 import Pagination from "react-js-pagination";
+import Abonnement from "./Abonnement";
 import './Users.css';
 
 const jwt = require('jsonwebtoken');
@@ -31,107 +32,17 @@ export default class Users extends Component {
 			text_search: text,
 			currentUser: undefined,
             users: undefined,
-			activePage: 1
+			activePage: 1,
+			nbTotalElement: 0,
         };
 		console.log("valeur text : " + this.state.text_search);
     }
 
-    update(users) {
+    update_user(user) {
         this.setState({
-            message: "",
-            users: users
+            currentUser: user
         })
     }
-	
-	async subscribe(ev, user){
-		
-		const token = localStorage.getItem("token");
-		
-		var options = {
-			method: 'POST',
-			headers: {
-				Authorization: "Bearer "+token
-			},
-			data: { id: user._id },
-			url: "http://localhost:5000/users/addAbonement/"
-		}
-		
-		try
-		{
-			const res = await axios(options);
-
-			if(res && res.status == 200){
-				var newUser = this.state.currentUser;
-				
-				if(newUser)
-				{
-					newUser.abonnements.push(user._id);
-					this.setState({ currentUser: newUser });
-				}
-			}
-		}
-		catch (err)
-		{
-			console.error(err);
-			
-			if(err.response && err.response.data.message == "Echec de l'Authentification"){
-				localStorage.removeItem("token");
-				window.location = "http://localhost:3000/";
-			}
-			this.setState({ message:err.response.data.message });
-		}
-	}
-	
-	async unsubscribe(ev, user){
-		const token = localStorage.getItem("token");
-		
-		var options = {
-			method: 'POST',
-			headers: {
-				Authorization: "Bearer " +token
-			},
-			data: { id: user._id },
-			url: "http://localhost:5000/users/removeAbonement/"
-		}
-		
-		try
-		{
-			const res = await axios(options);
-			console.log(res);
-
-			if(res && res.status == 200){
-				/*
-				if(res.data)
-				{
-					console.log(res.data);
-					const user = res.data;
-					
-					//this.setState({ currentUser: user });
-				}
-				*/
-				
-				
-				var newUser = this.state.currentUser;
-				
-				if(newUser)
-				{
-					newUser.abonnements = newUser.abonnements.filter(function(id) { return id!=user._id; });
-					this.setState({ currentUser: newUser });
-				}
-				
-			}
-		}
-		catch (err)
-		{
-			console.error(err);
-			
-			if(err.response && err.response.data.message == "Echec de l'Authentification"){
-				localStorage.removeItem("token");
-				window.location = "http://localhost:3000/";
-			}
-			this.setState({ message:err.response.data.message });
-		}
-	}
 	
 	async getListUsers(in_page){
 		const context = this;
@@ -147,7 +58,12 @@ export default class Users extends Component {
 					Authorization: "Bearer " +token,
 					"Content-Type": "application/json"
 				},
-				url: 'http://localhost:5000/users/UsersList/'+in_page
+				params: 
+				{
+					page: in_page,
+					per_page: 5
+				},
+				url: 'http://localhost:5000/users/UsersList'
 			}
 			
 			console.log(optionReq);
@@ -160,12 +76,15 @@ export default class Users extends Component {
 					const users = res.data.users;
 					console.log(users);
 					
-					if (users && users.length > 0) {
-						const filteredUsers = users.filter(function (user) { return (user.username.includes(context.state.text_search));});
+					if (users && users.users && users.users.length > 0) {
+						//const filteredUsers = users.filter(function (user) { return (user.username.includes(context.state.text_search));});
+						const filteredUsers = users.users;
+						const totalElements = users.total;
 						
 						this.setState({
 							users: filteredUsers,
-							activePage: in_page
+							activePage: in_page,
+							nbTotalElement: totalElements,
 						})
 					}
 				}
@@ -175,11 +94,28 @@ export default class Users extends Component {
 			{
 				console.error(err);
 				
-				if(err.response && err.response.data.message == "Echec de l'Authentification"){
-					localStorage.removeItem("token");
-					window.location = "http://localhost:3000/";
+				if(err.response){
+					if(err.response.data)
+					{
+						if(err.response.data.message == "Echec de l'Authentification")
+						{
+							localStorage.removeItem("token");
+							window.location = "http://localhost:3000/";
+						}
+						else
+						{
+							this.setState({ message:err.response.data });
+						}
+					}
+					else
+					{
+						this.setState({ message:err.response });
+					}
 				}
-				this.setState({ message:err.response.data.message });
+				else
+				{
+					this.setState({ message:err });
+				}
 			}
 		}
 	}
@@ -209,11 +145,15 @@ export default class Users extends Component {
 					if (user) { 
 						if(this.state.show == "abonnes")
 						{
-							this.setState({ currentUser: user, users: user.abonnées })
+							this.setState({ currentUser: user,
+								users: user.abonnées,
+								nbTotalElement: user.abonnées.length })
 						}
 						else if(this.state.show == "abonnements")
 						{
-							this.setState({ currentUser: user, users: user.abonnements })
+							this.setState({ currentUser: user,
+								users: user.abonnements,
+								nbTotalElement: user.abonnées.length })
 						}
 						else
 						{
@@ -240,14 +180,6 @@ export default class Users extends Component {
 	}
 
     componentDidMount() {
-		/*
-        if (this.state.show.toLocaleString()=="details") {
-			
-        }
-        else {
-			
-        }
-	*/
 		
 		if(!this.state.currentUser)
 		{
@@ -272,14 +204,7 @@ export default class Users extends Component {
 			comp = <p className="ItsMe">C'est moi</p>
 		}
 		else{
-			if(this.state.currentUser && this.state.currentUser.abonnements.includes(user))
-			{
-				comp = <button className="btn btn-info my-4 btn-block button_abonner" onClick={(ev, us) => this.unsubscribe(ev, user)}>Se desabonner</button>;
-			}
-			else
-			{
-				comp = <button className="btn btn-info my-4 btn-block button_desabonner" onClick={(ev, us) => this.subscribe(ev, user)}>S'abonner</button>;
-			}
+			comp = <Abonnement user={user} change_user={this.update_user} parent={this} />
 		}
 			
 		return comp;
@@ -300,7 +225,10 @@ export default class Users extends Component {
 	changePage(ev, context)
 	{
 		console.log(ev);
-		context.getListUsers(ev);
+		if(this.state.show.toLocaleString()=="research")
+		{
+			context.getListUsers(ev);
+		}
 	}
 	
 	getPagination() {
@@ -311,7 +239,7 @@ export default class Users extends Component {
 				<Pagination
 					activePage={this.state.activePage}
 					itemsCountPerPage={5}
-					totalItemsCount={25}
+					totalItemsCount={this.state.nbTotalElement}
 					pageRangeDisplayed={5}
 					onChange={(ev, context) => this.changePage(ev, this)}
 				/>);
@@ -355,95 +283,28 @@ export default class Users extends Component {
 		}
 		else
 		{
-			comp = (<div>
-				Aucun utilisateur n'a été trouvé
-			</div>);
+			if(this.state.show == "abonnes")
+			{
+				comp = (<div className="message_empty">
+					Personne n'est abonné à vous
+				</div>);
+			}
+			else if(this.state.show == "abonnements")
+			{
+				comp = (<div className="message_empty">
+					Vous n'êtes abonné à aucun utilisateur
+				</div>);
+			}
+			else
+			{
+				comp = (<div className="message_empty">
+					Aucun utilisateur n'a été trouvé
+				</div>);
+			}
 		}
 		
         return comp;
     }
-	
-	showListAbonnees() {
-		const context = this;
-		
-		var comp = undefined;
-		
-		if(this.state.currentUser && this.state.currentUser.abonnées && this.state.currentUser.abonnées.length > 0)
-		{
-			comp = (
-				<div>
-					<div className="errorMessage">{this.state.message}</div>
-					<div className="list_users">
-					{context.state.currentUser.abonnées.map(function (user) {
-						const url = "http://localhost:3000/profil/" + user._id
-						return (<div className="list_users_element">
-							<img className="photo_profil" src={"http://localhost:5000" + user.image} alt="" />
-							<div className="list_users_element2">
-								<a className="user_name" href={url}>
-									{user.username}
-								</a>
-								<br />
-								{user.email}
-								<br />
-								{context.getAbonnee(user)}
-								{context.getBoutonSubscribe(user)}
-							</div>
-							<hr/>
-						</div>);
-					})}
-					{this.getPagination()}
-					</div>
-				</div>
-			);
-		}
-		else
-		{
-			comp = (<div>Aucun utilisateur ne s'est abonné à vous</div>);
-		}
-		
-		return comp;
-	}
-	
-	showListAbonnements() {
-		const context = this;
-		
-		var comp = undefined;
-		
-		if(this.state.currentUser && this.state.currentUser.abonnements && this.state.currentUser.abonnements.length > 0)
-		{
-			comp = (
-				<div>
-					<div className="errorMessage">{this.state.message}</div>
-					<div className="list_users">
-					{context.state.currentUser.abonnements.map(function (user) {
-						const url = "http://localhost:3000/profil/" + user._id
-						return (<div className="list_users_element">
-							<img className="photo_profil" src={"http://localhost:5000" + user.image} alt="" />
-							<div className="list_users_element2">
-								<a className="user_name" href={url}>
-									{user.username}
-								</a>
-								<br />
-								{user.email}
-								<br />
-								{context.getAbonnee(user)}
-								{context.getBoutonSubscribe(user)}
-							</div>
-							<hr/>
-						</div>);
-					})}
-					{this.getPagination()}
-					</div>
-				</div>
-			);
-		}
-		else
-		{
-			comp = (<div>Vous n'êtes abonné à aucun utilisateur</div>);
-		}
-		
-		return comp;
-	}
 
     showDetails() {
         //console.log(this.state.users[0]);
@@ -457,16 +318,17 @@ export default class Users extends Component {
 
     render() {
         var affichage;
-
-        if (this.state.show.toLocaleString()=="abonnes") {
-            affichage = this.showListAbonnees();
-        }
-		else if(this.state.show.toLocaleString()=="abonnements") {
-            affichage = this.showListAbonnements();
-        }
-        else if(this.state.show.toLocaleString()=="research") {
-            affichage = this.showList();
-        }
+		
+		if(this.state.show == "abonnes" && this.state.currentUser)
+		{
+			this.state.users = this.state.currentUser.abonnées;
+		}
+		else if(this.state.show == "abonnements" && this.state.currentUser)
+		{
+			this.state.users = this.state.currentUser.abonnements;
+		}
+		
+		affichage = this.showList();
 
         return affichage;
     }

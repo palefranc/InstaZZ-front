@@ -45,3 +45,11 @@
 .errorMessage {
 	color: RED;
 }
+
+.message_empty
+{
+	width: fit-content;
+    margin: auto;
+    margin-top: 10%;
+    font-size: x-large;
+}

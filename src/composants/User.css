@@ -99,3 +99,11 @@ button.button_delete_user {
     color: black;
 
 }
+
+.error_publications
+{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 2%;
+	font-size: x-large;
+}

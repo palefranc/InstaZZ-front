@@ -17,7 +17,8 @@ export default class Demandes extends Component {
 		this.state = {
             message: "",
 			demandes: undefined,
-			activePage: 1
+			activePage: 1,
+			nbTotalElement: 0,
         };
 	}
 	
@@ -54,6 +55,8 @@ export default class Demandes extends Component {
 				if(res){
 					const user = res.data;
 					
+					console.log(user);
+					
 					if(user)
 					{
 						if(user.demandes)
@@ -88,6 +91,8 @@ export default class Demandes extends Component {
 		
 		var optionReq = undefined;
 		
+		console.log(demande);
+		
 		if(token){
 			
 			optionReq = {
@@ -115,6 +120,8 @@ export default class Demandes extends Component {
 					if(res.data)
 					{
 						const user = res.data;
+						
+						console.log(user);
 						
 						this.setState({ demandes: user.demandes })
 					}
@@ -243,7 +250,7 @@ export default class Demandes extends Component {
 		}
 		else
 		{
-			comp = (<div>
+			comp = (<div className="message_empty">
 				Aucune demande n'a été trouvée
 			</div>);
 		}

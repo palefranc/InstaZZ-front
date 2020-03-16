@@ -66,11 +66,12 @@ export default class AuthRouter extends Router {
 		}
 		catch (err) {
 			
+			
 			if(err.response)
 			{
-				if(err.response.data.message)
+				if(err.response.data.massage)
 				{
-					this.setState({ message: err.response.data.message });
+					this.setState({ message: err.response.data.massage });
 				}
 				else
 				{
@@ -137,7 +138,6 @@ export default class AuthRouter extends Router {
 		const optionReq = {
 			method: 'POST',
 			headers: {
-				Authorization: "Bearer "+token,
 				"Content-Type": "multipart/form-data",
 			},
 			data: formDatas,
@@ -159,11 +159,12 @@ export default class AuthRouter extends Router {
 			url: 'http://localhost:5000/users/signup'
 		}
 		*/
-		/*
+		
 		try {
 			const resp = await axios(optionReq);
 			
 			if(resp){
+				console.log(resp);
 				console.log(resp.data);
 				
 				const user = resp.data.user;
@@ -177,8 +178,9 @@ export default class AuthRouter extends Router {
 					
 					//context.setState({ auth: true});
 					
-					window.location = "http://localhost:3000/profil/";
+					
 				}
+				//setTimeout(() => { window.location = "http://localhost:3000/profil/"; }, 5000);
 			}
 			
 		}
@@ -196,7 +198,7 @@ export default class AuthRouter extends Router {
 				}
 			}
 		}
-		*/
+		
 	}
 	
 	getChoicePrivacy()
@@ -254,6 +256,18 @@ export default class AuthRouter extends Router {
 		}
 	}
 	
+	getErrorMessage()
+	{
+		var comp = undefined;
+		
+		if(this.state.message && this.state.message != "")
+		{
+			comp = <div className="error_message">{this.state.message}</div>
+		}
+		
+		return comp;
+	}
+	
 	activeCreation(ev, context){
 		context.state["message"] = "";
 		context.setState({ creationUser:true });
@@ -287,10 +301,12 @@ export default class AuthRouter extends Router {
 						placeholder="Mot de passe" 
 						onChange={(ev) => { this.changePwd(ev); } }
 					/>
+					
+					{this.getErrorMessage()}
 
 					<button className="btn btn-info btn-block my-4" type="submit">Connexion</button>
 
-					<p>Pas encore membre?
+					<p>Pas encore membre?<br />
 						<a href="/auth/signup">S'inscrire</a>
 					</p>
 
@@ -356,7 +372,6 @@ export default class AuthRouter extends Router {
 						name="bio"
 						rows="3" cols="25"
 						placeholder="Parlez de vous..."
-						value={this.state.input_description} 
 					/>
 					{context.getChoicePrivacy()}
 					<button className="btn btn-info my-4 btn-block" type="submit">Sign in</button>

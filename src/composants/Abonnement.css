@@ -1,0 +1,8 @@
+.button_action button
+{
+	height: fit-content;
+    margin-top: auto!important;
+    margin-bottom: auto!important;
+	margin-left: auto;
+	margin-right: auto;
+}
