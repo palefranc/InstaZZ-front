@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/InstaZZ-front/static/css/main.9744d463.chunk.css",
-    "main.js": "/InstaZZ-front/static/js/main.6a95b128.chunk.js",
-    "main.js.map": "/InstaZZ-front/static/js/main.6a95b128.chunk.js.map",
-    "runtime-main.js": "/InstaZZ-front/static/js/runtime-main.a3a3cb5f.js",
-    "runtime-main.js.map": "/InstaZZ-front/static/js/runtime-main.a3a3cb5f.js.map",
-    "static/css/2.b1f3d402.chunk.css": "/InstaZZ-front/static/css/2.b1f3d402.chunk.css",
-    "static/js/2.7b47d20c.chunk.js": "/InstaZZ-front/static/js/2.7b47d20c.chunk.js",
-    "static/js/2.7b47d20c.chunk.js.map": "/InstaZZ-front/static/js/2.7b47d20c.chunk.js.map",
-    "index.html": "/InstaZZ-front/index.html",
-    "precache-manifest.e89c026e40b966d6255aaf168126f080.js": "/InstaZZ-front/precache-manifest.e89c026e40b966d6255aaf168126f080.js",
-    "service-worker.js": "/InstaZZ-front/service-worker.js",
-    "static/css/2.b1f3d402.chunk.css.map": "/InstaZZ-front/static/css/2.b1f3d402.chunk.css.map",
-    "static/css/main.9744d463.chunk.css.map": "/InstaZZ-front/static/css/main.9744d463.chunk.css.map",
-    "static/js/2.7b47d20c.chunk.js.LICENSE.txt": "/InstaZZ-front/static/js/2.7b47d20c.chunk.js.LICENSE.txt",
-    "static/media/UploadIcon.svg": "/InstaZZ-front/static/media/UploadIcon.1cedb6e9.svg",
-    "static/media/logo_transparent.png": "/InstaZZ-front/static/media/logo_transparent.3a50b41b.png"
+    "main.css": "https://palefranc.github.io/InstaZZ-front/static/css/main.9744d463.chunk.css",
+    "main.js": "https://palefranc.github.io/InstaZZ-front/static/js/main.5fc566bf.chunk.js",
+    "main.js.map": "https://palefranc.github.io/InstaZZ-front/static/js/main.5fc566bf.chunk.js.map",
+    "runtime-main.js": "https://palefranc.github.io/InstaZZ-front/static/js/runtime-main.94e7e7ec.js",
+    "runtime-main.js.map": "https://palefranc.github.io/InstaZZ-front/static/js/runtime-main.94e7e7ec.js.map",
+    "static/css/2.b1f3d402.chunk.css": "https://palefranc.github.io/InstaZZ-front/static/css/2.b1f3d402.chunk.css",
+    "static/js/2.cd92741a.chunk.js": "https://palefranc.github.io/InstaZZ-front/static/js/2.cd92741a.chunk.js",
+    "static/js/2.cd92741a.chunk.js.map": "https://palefranc.github.io/InstaZZ-front/static/js/2.cd92741a.chunk.js.map",
+    "index.html": "https://palefranc.github.io/InstaZZ-front/index.html",
+    "precache-manifest.9895af40f8bedb17681e8978f24b0cd3.js": "https://palefranc.github.io/InstaZZ-front/precache-manifest.9895af40f8bedb17681e8978f24b0cd3.js",
+    "service-worker.js": "https://palefranc.github.io/InstaZZ-front/service-worker.js",
+    "static/css/2.b1f3d402.chunk.css.map": "https://palefranc.github.io/InstaZZ-front/static/css/2.b1f3d402.chunk.css.map",
+    "static/css/main.9744d463.chunk.css.map": "https://palefranc.github.io/InstaZZ-front/static/css/main.9744d463.chunk.css.map",
+    "static/js/2.cd92741a.chunk.js.LICENSE.txt": "https://palefranc.github.io/InstaZZ-front/static/js/2.cd92741a.chunk.js.LICENSE.txt",
+    "static/media/UploadIcon.svg": "https://palefranc.github.io/InstaZZ-front/static/media/UploadIcon.1cedb6e9.svg",
+    "static/media/logo_transparent.png": "https://palefranc.github.io/InstaZZ-front/static/media/logo_transparent.3a50b41b.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.a3a3cb5f.js",
+    "static/js/runtime-main.94e7e7ec.js",
     "static/css/2.b1f3d402.chunk.css",
-    "static/js/2.7b47d20c.chunk.js",
+    "static/js/2.cd92741a.chunk.js",
     "static/css/main.9744d463.chunk.css",
-    "static/js/main.6a95b128.chunk.js"
+    "static/js/main.5fc566bf.chunk.js"
   ]
 }
