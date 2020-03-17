@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "https://palefranc.github.io/InstaZZ-front/precache-manifest.94b0f79303ae1cd8fc6a9043e55d9f80.js"
+  "https://palefranc.github.io/InstaZZ-front/precache-manifest.537fe241f070aac7c4766c4872fb7fb7.js"
 );
 
 self.addEventListener('message', (event) => {
