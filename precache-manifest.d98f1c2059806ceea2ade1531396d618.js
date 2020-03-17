@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1c72289e27f60bfca6f2ca142cae484b",
+    "revision": "22025edd7dcc2bb388b7d74411ef63f5",
     "url": "https://palefranc.github.io/InstaZZ-front/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "https://palefranc.github.io/InstaZZ-front/static/css/2.b1f3d402.chunk.css"
   },
   {
-    "revision": "e2a6382e5a2477b47bc9",
+    "revision": "39b8a3aeb3e2978d996e",
     "url": "https://palefranc.github.io/InstaZZ-front/static/css/main.9744d463.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "https://palefranc.github.io/InstaZZ-front/static/js/2.cd92741a.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "e2a6382e5a2477b47bc9",
-    "url": "https://palefranc.github.io/InstaZZ-front/static/js/main.1fe436db.chunk.js"
+    "revision": "39b8a3aeb3e2978d996e",
+    "url": "https://palefranc.github.io/InstaZZ-front/static/js/main.34122184.chunk.js"
   },
   {
     "revision": "eddd681bee4dfdc8ddc0",
