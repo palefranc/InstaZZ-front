@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "df66fd071e1312d61d1718272cd3d965",
+    "revision": "27bf331d6419e4dcd3d4287cd15dad65",
     "url": "/InstaZZ-front/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/InstaZZ-front/static/css/2.b1f3d402.chunk.css"
   },
   {
-    "revision": "fdac2b3808dc0a222131",
+    "revision": "453775e1758b327acff5",
     "url": "/InstaZZ-front/static/css/main.9744d463.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/InstaZZ-front/static/js/2.7b47d20c.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "fdac2b3808dc0a222131",
-    "url": "/InstaZZ-front/static/js/main.d07f3fb9.chunk.js"
+    "revision": "453775e1758b327acff5",
+    "url": "/InstaZZ-front/static/js/main.17b90549.chunk.js"
   },
   {
     "revision": "ea49c99185fd1f25fa75",
