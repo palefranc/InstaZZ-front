@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "https://palefranc.github.io/InstaZZ-front/static/css/main.9744d463.chunk.css",
-    "main.js": "https://palefranc.github.io/InstaZZ-front/static/js/main.5ddede88.chunk.js",
-    "main.js.map": "https://palefranc.github.io/InstaZZ-front/static/js/main.5ddede88.chunk.js.map",
+    "main.js": "https://palefranc.github.io/InstaZZ-front/static/js/main.c0fd1822.chunk.js",
+    "main.js.map": "https://palefranc.github.io/InstaZZ-front/static/js/main.c0fd1822.chunk.js.map",
     "runtime-main.js": "https://palefranc.github.io/InstaZZ-front/static/js/runtime-main.94e7e7ec.js",
     "runtime-main.js.map": "https://palefranc.github.io/InstaZZ-front/static/js/runtime-main.94e7e7ec.js.map",
     "static/css/2.b1f3d402.chunk.css": "https://palefranc.github.io/InstaZZ-front/static/css/2.b1f3d402.chunk.css",
     "static/js/2.cd92741a.chunk.js": "https://palefranc.github.io/InstaZZ-front/static/js/2.cd92741a.chunk.js",
     "static/js/2.cd92741a.chunk.js.map": "https://palefranc.github.io/InstaZZ-front/static/js/2.cd92741a.chunk.js.map",
     "index.html": "https://palefranc.github.io/InstaZZ-front/index.html",
-    "precache-manifest.b7728e5d0722be20698cf6c9b3009f18.js": "https://palefranc.github.io/InstaZZ-front/precache-manifest.b7728e5d0722be20698cf6c9b3009f18.js",
+    "precache-manifest.11b4f483672c17f2c5285588c0b9e7de.js": "https://palefranc.github.io/InstaZZ-front/precache-manifest.11b4f483672c17f2c5285588c0b9e7de.js",
     "service-worker.js": "https://palefranc.github.io/InstaZZ-front/service-worker.js",
     "static/css/2.b1f3d402.chunk.css.map": "https://palefranc.github.io/InstaZZ-front/static/css/2.b1f3d402.chunk.css.map",
     "static/css/main.9744d463.chunk.css.map": "https://palefranc.github.io/InstaZZ-front/static/css/main.9744d463.chunk.css.map",
@@ -22,6 +22,6 @@
     "static/css/2.b1f3d402.chunk.css",
     "static/js/2.cd92741a.chunk.js",
     "static/css/main.9744d463.chunk.css",
-    "static/js/main.5ddede88.chunk.js"
+    "static/js/main.c0fd1822.chunk.js"
   ]
 }
