@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b67cede75231aabe819872f1356fffbd",
+    "revision": "23e34c5af131e2d3098cf19529136a0b",
     "url": "https://palefranc.github.io/InstaZZ-front/index.html"
   },
   {
