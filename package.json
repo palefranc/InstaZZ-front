@@ -13,7 +13,7 @@
     "lodash": "^4.17.15",
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0-beta.17",
-    "react-dev-utils": "^10.2.0",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.13.0",
     "react-images-upload": "^1.2.8",
     "react-js-pagination": "^3.0.3",
